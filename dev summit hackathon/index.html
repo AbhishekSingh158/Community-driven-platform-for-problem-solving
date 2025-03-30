@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovGuardian - Community Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --critical-color: #e74c3c;
+            --high-color: #f39c12;
+            --medium-color: #f1c40f;
+            --low-color: #2ecc71;
+            --light-bg: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
+            --header-bg: white;
+            --border-color: #ddd;
+            --secondary-text: #e2e2e2;
+            --upvote-color: #2ecc71;
+            --comment-color: #3498db;
+        }
+
+        .dark-mode {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --light-bg: #121212;
+            --text-color: #f1f1f1;
+            --card-bg: #1e1e1e;
+            --header-bg: #1a1a1a;
+            --border-color: #444;
+            --secondary-text: #aaa;
+            --upvote-color: #27ae60;
+            --comment-color: #4a9fe0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--header-bg);
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 5%;
+            text-align: center;
+            background: linear-gradient(rgba(205, 203, 203, 0.7), rgba(0, 0, 0, 0.7)), url('pattern-bg.png');
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: var(--secondary-text);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Recent Issues Section */
+        .issues-section {
+            padding: 2rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .issue-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .issue-category {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .critical { background: var(--critical-color); color: white; }
+        .high { background: var(--high-color); color: white; }
+        .medium { background: var(--medium-color); }
+        .low { background: var(--low-color); }
+
+        /* Interaction Buttons */
+        .interaction-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .upvote-btn, .comment-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--upvote-color);
+        }
+
+        .upvote-btn:hover {
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+
+        .upvote-btn.upvoted {
+            background-color: var(--upvote-color);
+            color: white;
+        }
+
+        .comment-btn {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--comment-color);
+        }
+
+        .comment-btn:hover {
+            background-color: rgba(52, 152, 219, 0.2);
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1rem;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        .comment-submit {
+            background-color: var(--comment-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0 1rem;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--light-bg);
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            margin-left: 0.5rem;
+        }
+
+        /* Feedback Section */
+        .feedback-section {
+            padding: 2rem 5%;
+            background: var(--card-bg);
+        }
+
+        .feedback-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feedback-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .feedback-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .rating-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--secondary-color);
+        }
+
+        .submit-btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            padding: 0 5%;
+        }
+
+        .emergency-btn {
+            background: var(--critical-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .emergency-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        #emergency-contacts {
+            margin-top: 1rem;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+
+        .emergency-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .emergency-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .emergency-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .call-btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .call-btn:hover {
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .issues-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-wrapper {
+                padding: 1.5rem;
+            }
+
+            .feedback-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i> GovGuardian
+        </div>
+        <nav class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="rewards.html"><i class="fas fa-trophy"></i> Rewards</a>
+            <a href="leaderboard.html"><i class="fas fa-user"></i> Leaderboard</a>
+            <a href="report.html"><i class="fas fa-flag"></i> Report</a>
+            <button class="dark-mode-toggle" id="darkModeToggle">🌓</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Community-Powered Infrastructure Monitoring</h1>
+        <p>GovGuardian is a citizen-driven platform where community members collaborate to report, track, and resolve local infrastructure issues. Together, we build better cities through collective action and transparent governance.</p>
+        
+    </section>
+
+    <section class="issues-section">
+        <h2 class="section-title"><i class="fas fa-exclamation-circle"></i> Recent Issues</h2>
+        <div class="issues-grid">
+            <!-- Issue cards will be dynamically added here -->
+        </div>
+    </section>
+
+    <div class="emergency-section">
+        <button class="emergency-btn" onclick="showEmergencyContacts()">🚨 Emergency Contacts</button>
+        <div id="emergency-contacts">
+            <ul class="emergency-list">
+                <li class="emergency-item">
+                    <strong>Municipality Office:</strong> +1800-180-6127
+                    <button class="call-btn" onclick="makeCall('+1800-180-6127')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </li>
+                <li class="emergency-item">
+                    <strong>Road Maintenance:</strong> 0141-2287591
+                    <button class="call-btn" onclick="makeCall('0141-2287591')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </li>
+                <li class="emergency-item">
+                    <strong>Water Supply:</strong> +0141-2743648
+                    <button class="call-btn" onclick="makeCall('+0141-2743648')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </li>
+                <li class="emergency-item">
+                    <strong>Electricity Department:</strong> +0141-2211910 
+                    <button class="call-btn" onclick="makeCall('+0141-2211910')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="feedback-section">
+        <div class="feedback-wrapper">
+            <h2 class="feedback-title">Share Your Feedback</h2>
+            <form class="feedback-form" id="feedbackForm">
+                <div class="form-group">
+                    <label class="form-label">How do you rate your overall experience?</label>
+                    <div class="rating-options">
+                        <div class="rating-option">
+                            <input type="radio" id="rating_bad" name="rating" value="bad" class="rating-input">
+                            <label for="rating_bad">Bad</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="rating_good" name="rating" value="good" class="rating-input">
+                            <label for="rating_good">Good</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="rating_excellent" name="rating" value="excellent" class="rating-input">
+                            <label for="rating_excellent">Excellent</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedback_comments" class="form-label">Your Comments:</label>
+                    <textarea id="feedback_comments" name="comments" class="form-control" rows="5" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedback_name" class="form-label">Your Name:</label>
+                    <input type="text" id="feedback_name" name="name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedback_email" class="form-label">Email Address:</label>
+                    <input type="email" id="feedback_email" name="email" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Feedback
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        // Check for saved user preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+
+        // Sample issues data with upvotes and comments
+        const issues = [
+            {
+                id: 1,
+                title: "Pothole on Main Street",
+                category: "Road",
+                location: "Mansarovar",
+                severity: "high",
+                description: "Large pothole causing traffic disruptions",
+                date: "2 hours ago",
+                upvotes: 15,
+                upvoted: false,
+                comments: [
+                    {
+                        id: 1,
+                        author: "Rahul Sharma",
+                        text: "This has been here for weeks! Very dangerous for two-wheelers.",
+                        date: "1 hour ago"
+                    },
+                    {
+                        id: 2,
+                        author: "Priya Patel",
+                        text: "I reported this last week but no action yet.",
+                        date: "30 minutes ago"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Street Light Outage",
+                category: "Electricity",
+                location: "Kukas",
+                severity: "medium",
+                description: "3 street lights not working for 2 days",
+                date: "5 hours ago",
+                upvotes: 8,
+                upvoted: true,
+                comments: [
+                    {
+                        id: 1,
+                        author: "Amit Singh",
+                        text: "This area becomes very dark at night. Please fix soon!",
+                        date: "3 hours ago"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Water Pipeline Leak",
+                category: "Water",
+                location: "Industrial Area",
+                severity: "critical",
+                description: "Major water leak near factory complex",
+                date: "1 day ago",
+                upvotes: 23,
+                upvoted: false,
+                comments: []
+            }
+        ];
+
+        // Function to create issue cards with interaction features
+        function createIssueCard(issue) {
+            const card = document.createElement('div');
+            card.className = 'issue-card fade-in';
+            
+            const categoryIcon = {
+                'Road': 'fas fa-road',
+                'Water': 'fas fa-tint',
+                'Electricity': 'fas fa-bolt'
+            }[issue.category] || 'fas fa-exclamation-triangle';
+
+            // Create comments HTML
+            let commentsHTML = '';
+            issue.comments.forEach(comment => {
+                commentsHTML += `
+                    <div class="comment">
+                        <span class="comment-author">${comment.author}</span>
+                        <span class="comment-date">${comment.date}</span>
+                        <p>${comment.text}</p>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="issue-category">
+                    <i class="${categoryIcon}"></i> ${issue.category}
+                </div>
+                <h3>${issue.title}</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ${issue.location}</p>
+                <div class="severity ${issue.severity}">${issue.severity.toUpperCase()}</div>
+                <p>${issue.description}</p>
+                <p class="date"><i class="fas fa-clock"></i> ${issue.date}</p>
+                
+                <div class="interaction-buttons">
+                    <button class="upvote-btn ${issue.upvoted ? 'upvoted' : ''}" onclick="toggleUpvote(${issue.id}, this)">
+                        <i class="fas fa-thumbs-up"></i> <span>${issue.upvotes}</span>
+                    </button>
+                    <button class="comment-btn" onclick="toggleComments(${issue.id}, this)">
+                        <i class="fas fa-comment"></i> Comment
+                    </button>
+                </div>
+                
+                <div class="comments-section" id="comments-${issue.id}">
+                    <div class="comments-list">
+                        ${commentsHTML}
+                    </div>
+                    <div class="comment-form">
+                        <input type="text" class="comment-input" placeholder="Add a comment..." id="comment-input-${issue.id}">
+                        <button class="comment-submit" onclick="addComment(${issue.id})">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Populate issues grid
+        const issuesGrid = document.querySelector('.issues-grid');
+        issues.forEach(issue => {
+            issuesGrid.appendChild(createIssueCard(issue));
+        });
+
+        // Toggle upvote function
+        function toggleUpvote(issueId, button) {
+            const issue = issues.find(i => i.id === issueId);
+            if (issue) {
+                if (issue.upvoted) {
+                    issue.upvotes--;
+                    issue.upvoted = false;
+                    button.classList.remove('upvoted');
+                } else {
+                    issue.upvotes++;
+                    issue.upvoted = true;
+                    button.classList.add('upvoted');
+                }
+                button.querySelector('span').textContent = issue.upvotes;
+            }
+        }
+
+        // Toggle comments visibility
+        function toggleComments(issueId, button) {
+            const commentsSection = document.getElementById(`comments-${issueId}`);
+            if (commentsSection.style.display === 'block') {
+                commentsSection.style.display = 'none';
+            } else {
+                // Hide all other comments sections first
+                document.querySelectorAll('.comments-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                commentsSection.style.display = 'block';
+            }
+        }
+
+        // Add new comment
+        function addComment(issueId) {
+            const input = document.getElementById(`comment-input-${issueId}`);
+            const commentText = input.value.trim();
+            if (commentText) {
+                const issue = issues.find(i => i.id === issueId);
+                if (issue) {
+                    const newComment = {
+                        id: issue.comments.length + 1,
+                        author: "You", // In a real app, this would be the logged in user
+                        text: commentText,
+                        date: "Just now"
+                    };
+                    issue.comments.push(newComment);
+                    
+                    // Update the comments list
+                    const commentsList = document.querySelector(`#comments-${issueId} .comments-list`);
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment fade-in';
+                    commentDiv.innerHTML = `
+                        <span class="comment-author">${newComment.author}</span>
+                        <span class="comment-date">${newComment.date}</span>
+                        <p>${newComment.text}</p>
+                    `;
+                    commentsList.appendChild(commentDiv);
+                    
+                    // Clear the input
+                    input.value = '';
+                }
+            }
+        }
+
+        // Form submission handling
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const rating = this.querySelector('input[name="rating"]:checked')?.value;
+            const comments = this.querySelector('#feedback_comments').value;
+            const name = this.querySelector('#feedback_name').value;
+            const email = this.querySelector('#feedback_email').value;
+            
+            // In a real app, you would send this data to your server
+            console.log({ rating, comments, name, email });
+            
+            // Show success message
+            alert('Thank you for your feedback! We appreciate your input.');
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Show Emergency Contacts
+        function showEmergencyContacts() {
+            const contacts = document.getElementById('emergency-contacts');
+            contacts.style.display = contacts.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Make Call
+        function makeCall(phoneNumber) {
+            window.location.href = `tel:${phoneNumber}`;
+        }
+    </script>
+   <script id="ratufa_loader" src="https://www.ratufa.io/c/ld.js?f=wt5xefwc&n=n1.ratufa.io"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovGuardian - Rewards</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --header-bg: white;
+            --header-border: #ddd;
+            --card-bg: white;
+            --card-border: #ddd;
+            --secondary-text: #777;
+            --primary-color: #3498db;
+            --button-color: #2ecc71;
+            --button-hover: #27ae60;
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #f1f1f1;
+            --header-bg: #1e1e1e;
+            --header-border: #333;
+            --card-bg: #2d2d2d;
+            --card-border: #444;
+            --secondary-text: #aaa;
+            --primary-color: #4a9fe0;
+            --button-color: #27ae60;
+            --button-hover: #2ecc71;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            padding: 1rem;
+            border-bottom: 1px solid var(--header-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .reward-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .reward-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin: 0 auto 1rem auto;
+        }
+
+        .reward-details {
+            flex: 1;
+        }
+
+        .reward-title {
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .reward-price {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+        }
+
+        .reward-description {
+            color: var(--secondary-text);
+            margin: 0.5rem 0;
+        }
+
+        .redeem-btn {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        .redeem-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .redeem-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .points-display {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        footer {
+            background-color: var(--header-bg);
+            padding: 1rem;
+            border-top: 1px solid var(--header-border);
+            text-align: center;
+            color: var(--secondary-text);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1 style="margin: 0;">GovGuardian</h1>
+            <p style="margin: 0; color: var(--secondary-text);">Rewards Center</p>
+        </div>
+        <div>
+        
+            <a href="index.html" style="margin-right: 1rem; color: var(--primary-color); text-decoration: none;">Home</a>
+            <a href="leaderboard.html" style="margin-right: 1rem; color: var(--primary-color); text-decoration: none;">Leaderboard</a>
+            <a href="report.html" style="color: var(--primary-color); text-decoration: none;">Report</a>
+            <button class="dark-mode-toggle" id="darkModeToggle">🌓</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="points-display" id="pointsDisplay">Your Civic Coins: 1000</div>
+        
+        <h2>Available Rewards</h2>
+        
+        <div class="rewards-grid">
+            <div class="reward-card">
+                <a href=""><img src="https://i.ibb.co/fVM888Vq/coupon.png" alt="coupon",border="0"></a>
+                <div class="reward-details">
+                    <h3 class="reward-title"> Gift Card</h3>
+                    <p class="reward-description">Redeem for a $5 credit to use on Amazon.com</p>
+                    <p class="reward-price">500 coins</p>
+                </div>
+                <button class="redeem-btn" onclick="redeemReward(500, this)">Redeem</button>
+            </div>
+            
+            <div class="reward-card">
+                <a href="https://imgbb.com/"><img src="https://i.ibb.co/0pg959Fq/discount.png" alt="discount",border="0"></a><br /><a target='_blank' href='https://imgbb.com/'></a><br />
+                <div class="reward-details">
+                    <h3 class="reward-title">Free food Coupons</h3>
+                    <p class="reward-description">Free Food Pass on the selected Restaurantrs</p>
+                    <p class="reward-price">300 coins</p>
+                </div>
+                <button class="redeem-btn" onclick="redeemReward(300, this)">Redeem</button>
+            </div>
+            
+            <div class="reward-card">
+                <a href="https://imgbb.com/"><img src="https://i.ibb.co/xKgf8Lf3/rewards.png" alt="rewards",border="0"></a>
+                <div class="reward-details">
+                    <h3 class="reward-title">Community Hero Certificate</h3>
+                    <p class="reward-description">Official recognition for your civic contributions</p>
+                    <p class="reward-price">200 coins</p>
+                </div>
+                <button class="redeem-btn" onclick="redeemReward(200, this)">Redeem</button>
+            </div>
+            
+            <div class="reward-card">
+                <a href="https://imgbb.com/"><img src="https://i.ibb.co/Q4yNP6J/subscription.png" alt="subscription",border="0"></a>
+                <div class="reward-details">
+                    <h3 class="reward-title">Free One Month Subscription on your favourite site</h3>
+                    <p class="reward-description">Free One Month Subscription on selected site</p>
+                    <p class="reward-price">150 coins</p>
+                </div>
+                <button class="redeem-btn" onclick="redeemReward(150, this)">Redeem</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>GovGuardian Dashboard © 2025 | AI-Driven Municipal & Institutional Infrastructure Monitoring</p>
+    </footer>
+
+    <script>
+        // Initialize points from localStorage or reset to 3000
+        let userPoints = parseInt(localStorage.getItem('userPoints')) || 3000;
+        localStorage.setItem('userPoints', userPoints); // Ensure it's saved as 3000 if not already set
+        document.getElementById('pointsDisplay').textContent = `Your Civic Coins: ${userPoints}`;
+
+        // Reward redemption function
+        function redeemReward(cost, button) {
+            if (userPoints >= cost) {
+                userPoints -= cost;
+                localStorage.setItem('userPoints', userPoints);
+                document.getElementById('pointsDisplay').textContent = `Your Civic Coins: ${userPoints}`;
+                button.disabled = true;
+                button.textContent = 'Redeemed!';
+                alert('Reward redeemed successfully!');
+                
+                // Update all buttons based on new points
+                updateButtonStates();
+            } else {
+                alert('Not enough points to redeem this reward!');
+            }
+        }
+
+        // Update button states based on current points
+        function updateButtonStates() {
+            const buttons = document.querySelectorAll('.redeem-btn');
+            buttons.forEach(button => {
+                const cost = button.textContent === 'Redeemed!' ? 0 : 
+                             parseInt(button.parentElement.querySelector('.reward-price').textContent);
+                button.disabled = userPoints < cost || button.textContent === 'Redeemed!';
+            });
+        }
+
+        // Initialize button states
+        updateButtonStates();
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        // Check for saved user preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+    </script>
+</body>
+</html>

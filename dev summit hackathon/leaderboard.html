@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovGuardian - Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --critical-color: #e74c3c;
+            --high-color: #f39c12;
+            --medium-color: #f1c40f;
+            --low-color: #2ecc71;
+            --light-bg: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
+            --header-bg: white;
+            --border-color: #ddd;
+            --secondary-text: #666;
+            --gold-color: #ffd700;
+            --silver-color: #c0c0c0;
+            --bronze-color: #cd7f32;
+        }
+
+        .dark-mode {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --light-bg: #121212;
+            --text-color: #f1f1f1;
+            --card-bg: #1e1e1e;
+            --header-bg: #1a1a1a;
+            --border-color: #444;
+            --secondary-text: #aaa;
+            --gold-color: #ffd700;
+            --silver-color: #c0c0c0;
+            --bronze-color: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--header-bg);
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 5%;
+            text-align: center;
+            background: linear-gradient(rgba(205, 203, 203, 0.7), rgba(0, 0, 0, 0.7)), url('pattern-bg.png');
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: var(--secondary-text);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .leaderboard-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .leaderboard-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rank {
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+        }
+
+        .medal-icon {
+            font-size: 1.5rem;
+        }
+
+        .points {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .gold { color: var(--gold-color); }
+        .silver { color: var(--silver-color); }
+        .bronze { color: var(--bronze-color); }
+        .star-icon { color: var(--text-color); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i> GovGuardian
+        </div>
+        <nav class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="rewards.html"><i class="fas fa-trophy"></i> Rewards</a>
+            <a href="leaderboard.html"><i class="fas fa-user"></i> Leaderboard</a>
+            <a href="report.html"><i class="fas fa-flag"></i> Report</a>
+            <button class="dark-mode-toggle" id="darkModeToggle">🌓</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Community Leaderboard</h1>
+        <p>GovGuardian is a citizen-driven platform where community members are recognized for their contributions to improving local infrastructure. See where you stand among our top contributors!</p>
+    </section>
+
+    <div class="leaderboard-container">
+        <!-- Leaderboard entries will be dynamically inserted here -->
+    </div>
+
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        function toggleTheme() {
+            const isDark = body.classList.contains('dark-mode');
+            body.classList.toggle('dark-mode', !isDark);
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            darkModeToggle.textContent = isDark ? '🌓' : '🌞';
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            darkModeToggle.textContent = '🌞';
+        } else {
+            darkModeToggle.textContent = '🌓';
+        }
+
+        darkModeToggle.addEventListener('click', toggleTheme);
+
+        // Leaderboard Data
+        const users = [
+            { name: "Khushi", points: 10000 },
+            { name: "Aryan", points: 8000 },
+            { name: "Abhishek", points: 6000 },
+            { name: "Dhruv", points: 4000 }
+        ];
+
+        const leaderboardContainer = document.querySelector('.leaderboard-container');
+
+        users.forEach((user, index) => {
+            const card = document.createElement('div');
+            card.className = 'leaderboard-card';
+
+            const medalIcons = [
+                '<i class="fas fa-medal gold medal-icon"></i>',
+                '<i class="fas fa-medal silver medal-icon"></i>',
+                '<i class="fas fa-medal bronze medal-icon"></i>',
+                '<i class="fas fa-star medal-icon star-icon"></i>'
+            ];
+
+            card.innerHTML = `
+                <div class="user-info">
+                    <span class="rank">${index + 1}</span>
+                    ${index < 3 ? medalIcons[index] : medalIcons[3]}
+                    <span>${user.name}</span>
+                </div>
+                <div class="points">${user.points.toLocaleString()} Points</div>
+            `;
+
+            leaderboardContainer.appendChild(card);
+        });
+    </script>
+</body>
+</html>
